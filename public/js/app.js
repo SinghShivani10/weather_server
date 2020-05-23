@@ -18,25 +18,25 @@ weather_form.addEventListener('submit', (e) => {
     e.preventDefault()
     message1.textContent = "Loading ...."
 
-    fetch(`http://localhost:3000/weather?address=${input.value}`)
+    //const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    //, { mode: 'no-cors' }
+    fetch(`/weather?address=${input.value}`)
     .then((response) => {
         return response.json()
     })
     .then(data => {
+        console.log(data)
         if(data.Error)
         {
-            console.log(data.Error)
             message1.textContent = data.Error
         }
         else{
-            console.log(data)
             message1.textContent = 'Location : ' + data.location
             message2.textContent = 'Weather Forcast : ' + data.forcat
         }
     })
     .catch(error => {
-        console.log("somthing iterrepted")
-        message1.textContent = 'Something interrupted'
+        message1.textContent = 'Something interrupted' + error
     });
 
 })

@@ -5,6 +5,7 @@ const hbs = require('hbs');
 const geocode = require('./utils/geocode')
 const forecast = require('./utils/forecast')
 const http = require('http');
+const port = process.env.PORT || 3000
 
 //Define path for express config
 const pathName = path.join(__dirname, '../public')
@@ -15,7 +16,7 @@ const partialPath = path.join(__dirname, '../templates/partial')
 //setup handlebar location and view
 app.set('view engine', 'hbs' )
 app.set('views', viewpath)
-hbs.registerPafrtials(partialPath)
+hbs.registerPartials(partialPath)
 
 //static data to serve
 app.use(express.static(pathName))
@@ -39,6 +40,7 @@ app.get('/help',(req, res) => {
 })
 
 app.get('/weather',(req, res) => {
+    
     if(!req.query.address)
     {
         return res.send({
@@ -46,6 +48,7 @@ app.get('/weather',(req, res) => {
         })
     }
 
+    //res.setHeader('Access-Control-Allow-Origin', '*');
     geocode(req.query.address, (error, {longitude, latitude, location} = {}) => {
         if(error)
         {
@@ -99,6 +102,6 @@ app.get('*',(req,res) => {
     })
 })
 
-app.listen(3000, () => {
-    console.log("Server is upto 3000 port.")
+app.listen(port, () => {
+    console.log("Server is on port." + port)
 })
